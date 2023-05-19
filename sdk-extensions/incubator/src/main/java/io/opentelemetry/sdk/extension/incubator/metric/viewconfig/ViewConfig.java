@@ -96,23 +96,26 @@ public final class ViewConfig {
     for (ViewConfigSpecification viewConfigSpec : viewConfigSpecs) {
       meterProviderBuilder.registerView(
           toInstrumentSelector(viewConfigSpec.getSelectorSpecification()),
-          toView(viewConfigSpec.getViewSpecification(),null));
+          toView(viewConfigSpec.getViewSpecification(), null));
     }
   }
 
+  /**
+   * Load the view configuration YAML from the {@code inputStream} and apply it to the {@link
+   * SdkMeterProviderBuilder}.
+   */
   public static void registerViews(
-      SdkMeterProviderBuilder meterProviderBuilder, InputStream inputStream,
+      SdkMeterProviderBuilder meterProviderBuilder,
+      InputStream inputStream,
       ConfigProperties configProperties) {
     List<ViewConfigSpecification> viewConfigSpecs = loadViewConfig(inputStream);
 
     for (ViewConfigSpecification viewConfigSpec : viewConfigSpecs) {
       meterProviderBuilder.registerView(
           toInstrumentSelector(viewConfigSpec.getSelectorSpecification()),
-          toView(viewConfigSpec.getViewSpecification(),configProperties));
+          toView(viewConfigSpec.getViewSpecification(), configProperties));
     }
   }
-
-
 
   // Visible for testing
   @SuppressWarnings("unchecked")
@@ -213,16 +216,17 @@ public final class ViewConfig {
     return builder.build();
   }
 
-  static View toView(ViewSpecification viewSpec,@Nullable ConfigProperties configProperties) {
+  static View toView(ViewSpecification viewSpec, @Nullable ConfigProperties configProperties) {
     ViewBuilder builder = View.builder();
     // add additional attributes
     if (configProperties != null) {
       AttributesBuilder attributesBuilder = Attributes.builder();
-      for (ConfigurableMetricAttributesProvider provider :  ServiceLoader.load(
-          ConfigurableMetricAttributesProvider.class)){
+      for (ConfigurableMetricAttributesProvider provider :
+          ServiceLoader.load(ConfigurableMetricAttributesProvider.class)) {
         attributesBuilder.putAll(provider.addCustomAttributes(configProperties));
       }
-      SdkMeterProviderUtil.appendAdditionalAttributes(builder, AttributesProcessor.append(attributesBuilder.build()));
+      SdkMeterProviderUtil.appendAdditionalAttributes(
+          builder, AttributesProcessor.append(attributesBuilder.build()));
     }
     String name = viewSpec.getName();
     if (name != null) {

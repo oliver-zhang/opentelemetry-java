@@ -14,6 +14,6 @@ import io.opentelemetry.sdk.autoconfigure.spi.ConfigProperties;
  */
 public interface ConfigurableMetricAttributesProvider {
 
-  /** Returns a {@link Attributes} that can be added to OpenTelemetry view AttributeProcessor */
+  /** Returns a {@link Attributes} that can be added to OpenTelemetry view AttributeProcessor. */
   Attributes addCustomAttributes(ConfigProperties config);
 }

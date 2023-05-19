@@ -1,3 +1,8 @@
+/*
+ * Copyright The OpenTelemetry Authors
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
 package io.opentelemetry.sdk.extension.incubator.metric.viewconfig;
 
 import static io.opentelemetry.sdk.testing.assertj.OpenTelemetryAssertions.attributeEntry;
@@ -37,10 +42,7 @@ public class ViewConfigAdditionalTest {
         .buildWithCallback(
             callback -> {
               // Attributes with keys baz and qux should be filtered out
-              callback.record(
-                  1,
-                  Attributes.builder()
-                      .build());
+              callback.record(1, Attributes.builder().build());
             });
 
     assertThat(reader.collectAllMetrics())
@@ -53,7 +55,6 @@ public class ViewConfigAdditionalTest {
                                 point ->
                                     point
                                         .hasValue(1)
-                                        .hasAttributes(
-                                            attributeEntry("foo", "val")))));
+                                        .hasAttributes(attributeEntry("foo", "val")))));
   }
 }

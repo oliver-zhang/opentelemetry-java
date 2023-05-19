@@ -29,7 +29,8 @@ public final class ViewConfigCustomizer implements AutoConfigurationCustomizerPr
       SdkMeterProviderBuilder meterProviderBuilder, ConfigProperties configProperties) {
     List<String> configFileLocations =
         configProperties.getList("otel.experimental.metrics.view.config");
-    boolean additionAttrsEnable = configProperties.getBoolean("otel.experimental.metrics.view.additional.enable",true);
+    boolean additionAttrsEnable =
+        configProperties.getBoolean("otel.experimental.metrics.view.additional.enable", true);
     for (String configFileLocation : configFileLocations) {
       if (configFileLocation.startsWith("classpath:")) {
         String classpathLocation = configFileLocation.substring("classpath:".length());
@@ -43,7 +44,7 @@ public final class ViewConfigCustomizer implements AutoConfigurationCustomizerPr
                     + ViewConfigCustomizer.class.getClassLoader().getClass().getName());
           }
           if (additionAttrsEnable) {
-            ViewConfig.registerViews(meterProviderBuilder,inputStream,configProperties);
+            ViewConfig.registerViews(meterProviderBuilder, inputStream, configProperties);
           } else {
             ViewConfig.registerViews(meterProviderBuilder, inputStream);
           }
@@ -56,7 +57,7 @@ public final class ViewConfigCustomizer implements AutoConfigurationCustomizerPr
       } else {
         try (FileInputStream fileInputStream = new FileInputStream(configFileLocation)) {
           if (additionAttrsEnable) {
-            ViewConfig.registerViews(meterProviderBuilder,fileInputStream,configProperties);
+            ViewConfig.registerViews(meterProviderBuilder, fileInputStream, configProperties);
           } else {
             ViewConfig.registerViews(meterProviderBuilder, fileInputStream);
           }
